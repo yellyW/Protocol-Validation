@@ -1,0 +1,1 @@
+ [true*.shpos.!(mDown&&mUp)*.(mLeft&&mRight)]false
