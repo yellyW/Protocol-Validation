@@ -1,0 +1,25 @@
+<root>
+ <spec>try_spec.mcrl2</spec>
+ <properties>
+  <property>11</property>
+  <property>2</property>
+  <property>1</property>
+  <property>3</property>
+  <property>4a</property>
+  <property>4b</property>
+  <property>4c</property>
+  <property>4d</property>
+  <property>5a</property>
+  <property>6</property>
+  <property>7a</property>
+  <property>8a</property>
+  <property>8b</property>
+  <property>9</property>
+  <property>10a</property>
+  <property>5b</property>
+  <property>5c</property>
+  <property>5d</property>
+  <property>7b</property>
+  <property>10b</property>
+ </properties>
+</root>

@@ -1,0 +1,511 @@
+act pressStop,pressResume,pressUndock,Undock,DoCali,Dock,pressReset, pressUp,Noact,rVbrake,stop,m1off,aVbrake,umost,mUp,rHbrake,UnCali,Emer,m2off,aHbrake,lmost,mLeft,mRight,shpos,releaseUp,pressDown,releaseDown,mDown,dmost,abovesh,belowsh,rmost,between;
+act up,left,um, m1:Bool;
+act rcv,comma,snd_s_m1,rcv_s_m1,comm_s_m1,snd_m_m1,rcv_m_m1,comm_m_m1,snd_s_m2,rcv_s_m2,comm_s_m2:Bool;
+act snd_m_m1nn,rcv_m_m1nn,comm_m_m1nn,snd_m_emer,rcv_m_emer,comm_m_emer,snd_c_emer,rcv_c_emer,comm_c_emer,snd_m_cali,rcv_m_cali,comm_m_cali:Bool;
+act snd_c_up,rcv_c_up,comm_c_up,snd_s_pos,rcv_s_pos,comm_s_pos,snd_c_bt,rcv_c_bt,comm_c_bt,snd_s_undock,rcv_s_undock,comm_s_undock,snd_s_cali,rcv_s_cali,comm_s_cali,snd_m_cali1,rcv_m_cali1,comm_m_cali1,snd_m_cali2,rcv_m_cali2,comm_m_cali2,snd_m_cali3,rcv_m_cali3,comm_m_cali3:Bool;
+%act snd_m_up,rcv_m_up,comm_m_up:Bool;
+act snd_m_m2,rcv_m_m2,comm_m_m2:Bool;
+act snd_c_lm,rcv_c_lm,comm_c_lm,snd_c_bl,rcv_c_bl,comm_c_bl,snd_m_m1shrm,rcv_m_m1shrm,comm_m_m1shrm,snd_m_m2d,rcv_m_m2d,comm_m_m2d,snd_s_m2d,rcv_s_m2d,comm_s_m2d:Bool;
+act snd_c_right,rcv_c_right,comm_c_right:Bool;
+act snd_c_left,rcv_c_left,comm_c_left,snd_m_m1dsh,rcv_m_m1dsh,comm_m_m1dsh,snd_c_dm,rcv_c_dm,comm_c_dm,snd_m_m1dm,rcv_m_m1dm,comm_m_m1dm,snd_c_m1dm,rcv_c_m1dm,comm_c_m1dm:Bool;
+act snd_m_m1sh,rcv_m_m1sh,comm_m_m1sh,snd_c_sh,rcv_c_sh,comm_c_sh,snd_c_ab,rcv_c_ab,comm_c_ab,snd_c_down,rcv_c_down,comm_c_down,snd_c_rm,rcv_c_rm,comm_c_rm,snd_m_m1dshn,rcv_m_m1dshn,comm_m_m1dshn,snd_c_um,rcv_c_um,comm_c_um:Bool;
+act snd_m_m1n,rcv_m_m1n,comm_m_m1n,snd_m_m2n,rcv_m_m2n,comm_m_m2n,snd_m_m1d,rcv_m_m1d,comm_m_m1d,snd_s_m1d,rcv_s_m1d,comm_s_m1d,snd_m_m1o,rcv_m_m1o,comm_m_m1o,snd_m_m1ush,rcv_m_m1ush,comm_m_m1ush:Bool;
+
+proc Controller(up:Bool,m1:Bool,um:Bool,left:Bool,m2:Bool,lm:Bool,cali:Bool,dock:Bool,dm:Bool,ab:Bool,bl:Bool,sh:Bool,rm:Bool,down:Bool,right:Bool,emer:Bool)=(pressUp.
+(
+	
+	((up)->( (dock&&cali)->
+			( 	(dm)->(snd_m_m1(true).( (sum b:Bool.rcv_c_sh(b).(b)->(releaseUp.( ((!rm)&&(!lm))->(snd_m_m1dsh(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer))
+																							<>(	(rm&&(!lm))->(snd_m_m1dshn(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,false,cali,dock,false,false,false,b,rm,d,e,emer))	
+																										  <>(  ((!rm)&&lm)->(snd_m_m1dsh(true).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer))
+																											)
+																							  )
+																			     )      
+																     )
+									    )
+									   +(sum b:Bool.rcv_c_bl(b).(b)->(releaseUp.snd_m_m1(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,false,false,left,m2,lm,cali,dock,false,false,b,false,rm,d,right,emer))
+										)
+									)
+					    )
+				  <>(  (bl)->(snd_m_m1(true).sum b:Bool.rcv_c_sh(b).(b)->(releaseUp.
+				(	((!rm)&&(!lm))->(snd_m_m1dsh(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer))
+						<>(	(rm&&(!lm))->(snd_m_m1dshn(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,false,cali,dock,false,false,false,b,rm,d,e,emer))	
+								<>(	((!rm)&&lm)->(snd_m_m1dsh(true).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer)))
+								  )
+						   )      
+			   )
+							                                                )
+
+							<>((ab)->(snd_m_m1(true).sum b:Bool.rcv_c_um(b).(b)->(releaseUp.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,b,left,m2,lm,cali,dock,false,false,false,false,rm,d,right,emer)))
+										<>((um)->(Noact.releaseUp.snd_m_m1n(false).sum d:Bool.rcv_c_down(d).
+											sum c:Bool.rcv_c_up(c).Controller(c,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,d,right,emer))
+							 ))
+							 
+						
+					)
+				
+			)
+			<>
+			  %( ((!dock)||(!cali))->
+%%%%%%%%%%%%%%%( (cali)->%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+				( ((!cali)||(!dock))->%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+					(
+						(!um)->(
+									(bl||dm)->(snd_m_m1(true).(
+																	(sum b:Bool.rcv_c_ab(b).(b)->(releaseUp.snd_m_m1(false).sum c:Bool.rcv_c_down(c).sum a:Bool.rcv_c_up(a).Controller(a,m1,false,left,m2,lm,cali,dock,false,b,false,false,rm,c,right,emer)))
+																	+(sum b:Bool.rcv_c_bl(b).(b)->(releaseUp.snd_m_m1(false).sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_up(d).Controller(d,false,false,left,m2,lm,cali,dock,false,false,b,false,rm,c,right,emer)))
+																	+(sum b:Bool.rcv_c_sh(b).(b)->(releaseUp.snd_m_m1(false).sum c:Bool.rcv_c_down(c).sum a:Bool.rcv_c_up(a).Controller(a,false,false,left,m2,lm,cali,dock,false,false,false,b,rm,c,right,emer)))
+																	+(sum b:Bool.rcv_c_um(b).(b)->(releaseUp.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(false,m1,b,left,m2,lm,cali,dock,false,false,false,false,rm,d,right,emer)))
+															 )
+												)
+							 				<>(
+												(ab||sh)->(
+																snd_m_m1(true).(
+																					(sum b:Bool.rcv_c_ab(b).(b)->(releaseUp.snd_m_m1(false).sum c:Bool.rcv_c_down(c).sum a:Bool.rcv_c_up(a).Controller(a,false,false,left,m2,lm,cali,dock,false,b,false,false,rm,c,right,emer)))
+																					+(sum b:Bool.rcv_c_um(b).(b)->(releaseUp.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,true,left,m2,lm,cali,dock,false,false,false,false,rm,d,right,emer)))
+																				)
+															)
+												)
+						  	 )
+						   <>(Noact.releaseUp.snd_m_m1n(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,d,right,emer))
+				  )
+				  	<>(
+						(!um)->(
+									(bl||dm)->(snd_m_m1(true).(
+																	(sum b:Bool.rcv_c_ab(b).(b)->(releaseUp.snd_m_m1(false).sum c:Bool.rcv_c_down(c).sum a:Bool.rcv_c_up(a).Controller(a,false,false,left,m2,lm,cali,dock,false,b,false,false,rm,c,right,emer)))
+																	+(sum b:Bool.rcv_c_bl(b).(b)->(releaseUp.snd_m_m1(false).sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_up(d).Controller(d,false,false,left,m2,false,cali,dock,false,false,b,false,rm,c,right,emer)))
+																	+(sum b:Bool.rcv_c_um(b).(b)->(releaseUp.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(false,m1,true,left,m2,lm,cali,dock,false,false,false,false,rm,d,right,emer)))
+															 )
+												)
+							 				<>(
+												(ab)->(snd_m_m1(true).(
+																			(sum b:Bool.rcv_c_ab(b).(b)->(releaseUp.snd_m_m1(true).sum c:Bool.rcv_c_down(c).sum a:Bool.snd_c_up(a).Controller(a,false,false,left,m2,lm,cali,dock,false,b,false,false,rm,c,right,emer)))
+																			+(sum b:Bool.rcv_c_um(b).(b)->(releaseUp.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,true,left,m2,lm,cali,dock,false,false,false,false,rm,d,right,emer)))
+																	)
+													   )
+											  )
+						  	 )
+						   <>(Noact.releaseUp.snd_m_m1n(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,d,right,emer))
+				    )
+			 )
+		  )
+		)
+	+(((!up)&&(!left))->Noact.releaseUp.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+	%+((!dock)->Noact.releaseUp.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+	
+	+(	(left)->(
+					(dock&&cali&&sh)->(
+											(!lm)->(snd_m_m2(true).sum b:Bool.rcv_c_lm(b).(b)->(snd_m_m2(false).sum a:Bool.rcv_c_left(a).sum c:Bool.rcv_c_right(c).sum f:Bool.rcv_c_down(f).Controller(up,m1,um,a,m2,true,cali,dock,false,false,false,true,false,f,c,emer)))
+										)
+									<>(Noact.releaseUp.Controller(up,m1,um,false,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+				)
+						
+	)
+))
++(pressDown.
+( 
+	((down)->( 	(dock&&cali)->
+			 				 (
+								(um)->(snd_m_m1d(true).(
+															(sum b:Bool.rcv_c_sh(b).(b)->(releaseDown.(
+																											((!rm)&&(!lm))->(snd_m_m1dsh(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer))
+																														  <>(
+																																(rm&&(!lm))->(snd_m_m1dshn(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,false,cali,dock,false,false,false,b,rm,d,e,emer))
+																																			<>(
+																																				((!rm)&&lm)->(snd_m_m1dsh(true).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer))
+																																			  )
+																															)
+																										)
+																						 )
+								   					   		)
+								  				     	  +(sum b:Bool.rcv_c_ab(b).(b)->(releaseDown.snd_m_m1d(false).sum c:Bool.rcv_c_down(c).sum a:Bool.rcv_c_up(a).Controller(a,false,false,left,m2,lm,cali,dock,false,b,false,false,rm,c,right,emer))
+														   )
+													  )
+									  )
+						  
+								<>(
+									(ab)->(
+											snd_m_m1d(true).sum b:Bool.rcv_c_sh(b).(b)->(releaseDown.
+																									(
+																										((!rm)&&(!lm))->(snd_m_m1dsh(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer))
+																													  <>(
+																															(rm&&(!lm))->(snd_m_m1dshn(false).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,false,cali,dock,false,false,false,b,rm,d,e,emer))
+																																		<>(
+																																			((!rm)&&lm)->(snd_m_m1dsh(true).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(c,false,false,a,m2,lm,cali,dock,false,false,false,b,rm,d,e,emer))
+																																		   )
+																														)
+																									 )
+																				   		 )
+								 		)
+									
+								
+									<>(	(bl) ->(snd_m_m1d(true).sum b:Bool.rcv_c_dm(b).(b)->(releaseDown.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(true).
+										sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,false,left,m2,lm,cali,dock,b,false,false,false,rm,d,right,emer)))
+								             <>(
+													(sh&&rm)->(snd_m_m1d(true).
+																	(
+																		(sum b:Bool.rcv_c_dm(b).(b)->(releaseDown.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(true).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,false,left,m2,false,cali,dock,b,false,false,false,rm,d,right,emer)))
+																		+(sum b:Bool.rcv_c_bl(b).(b)->(releaseDown.snd_m_m1d(false).sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_up(d).Controller(d,false,false,left,m2,false,cali,dock,false,false,b,false,rm,c,right,emer)))
+																	)
+											                 )
+														  <>(
+																(dm)->Noact.releaseDown.snd_m_m1n(true).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,d,right,emer)
+															)
+										 	  )
+							        )
+					      		)
+							)
+			+
+			  ( ((!cali)||(!dock))->
+				
+				(	
+				(!dm)->%snd_m_m1d(true).sum b:Bool.rcv_c_dm(b).((b)->snd_m_m1d(false).sum c:Bool.rcv_c_down(c).Controller(up,m1,um,left,false,lm,cali,dock,b,false,false,sh,rm,c,right))
+						(
+							(um||ab)->(snd_m_m1d(true).((sum b:Bool.rcv_c_ab(b).(b)->(releaseDown.snd_m_m1d(false).
+										sum c:Bool.rcv_c_down(c).sum a:Bool.rcv_c_up(a).Controller(a,false,false,left,m2,lm,cali,dock,false,b,false,false,rm,c,right,emer)))
+													+(sum b:Bool.rcv_c_bl(b).(b)->(releaseDown.snd_m_m1d(false).
+													sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_up(d).Controller(d,false,false,left,m2,lm,cali,dock,false,false,b,false,rm,c,right,emer)))
+													+(sum b:Bool.rcv_c_sh(b).(b)->(releaseDown.snd_m_m1d(false).
+													sum c:Bool.rcv_c_down(c).sum a:Bool.rcv_c_up(a).Controller(a,false,false,left,m2,lm,cali,dock,false,false,false,b,rm,c,right,emer)))
+													+(sum b:Bool.rcv_c_dm(b).(b)->(releaseDown.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(true).
+													sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,false,left,m2,lm,cali,dock,b,false,false,false,rm,d,right,emer)))
+													))
+									<>((bl||sh)->(snd_m_m1d(true).((sum b:Bool.rcv_c_bl(b).(b)->(releaseDown.snd_m_m1d(false).
+													sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_up(d).Controller(d,false,false,left,m2,lm,cali,dock,false,false,b,false,rm,c,right,emer)))
+																	+(sum b:Bool.rcv_c_dm(b).(b)->(releaseDown.snd_m_m1dm(false).sum a:Bool.rcv_c_m1dm(a).snd_m_m1n(true).
+													sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,false,left,m2,lm,cali,dock,b,false,false,false,rm,d,right,emer)))
+																	)
+												 )
+										)
+									  
+						)
+				<>(Noact.releaseDown.snd_m_m1n(true).sum d:Bool.rcv_c_down(d).sum c:Bool.rcv_c_up(c).Controller(c,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,d,right,emer))
+			  	)
+				)
+		  )
+	)
+	+(((!down)&&(!right))->Noact.releaseDown.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+	%+((!dock)->Noact.releaseDown.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+	+((right)->((dock&&cali&&sh)->((!rm)->	(snd_m_m2d(true).sum b:Bool.rcv_c_rm(b).(b)->(releaseDown.snd_m_m2d(false).sum a:Bool.rcv_c_right(a).sum d:Bool.rcv_c_left(d).sum c:Bool.rcv_c_down(c).sum f:Bool.rcv_c_up(f).Controller(f,m1,false,d,m2,false,cali,dock,false,false,false,true,true,c,a,emer))))))
+))
++(pressStop.snd_m_emer(true).sum b:Bool.rcv_c_emer(b).(b)->(Emer.sum a:Bool.rcv_c_left(a).sum c:Bool.rcv_c_right(c).Controller(up,m1,um,a,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,c,b))
+
+)
++(pressResume.snd_m_emer(false).sum b:Bool.rcv_c_emer(b).(!b)->(snd_s_pos(true).(!sh)->
+																((sum d:Bool.rcv_c_lm(d).(d)->Controller(up,m1,um,left,m2,d,cali,dock,dm,ab,bl,sh,false,down,right,b))
+																 +(sum d:Bool.rcv_c_rm(d).(d)->Controller(up,m1,um,left,m2,false,cali,dock,dm,ab,bl,sh,d,down,right,b))
+																 %+(sum d:Bool.rcv_c_bt(d).(d)->Controller(up,m1,um,left,m2,false,cali,dock,dm,ab,bl,sh,false,down,right,b))
+																)
+																<>( (dock&&cali)->(
+																	(sum d:Bool.rcv_c_lm(d).(d)->(sum a:Bool.rcv_c_right(a).(a)->sum e:Bool.rcv_c_up(e).sum f:Bool.rcv_c_down(f).Controller(e,m1,um,false,m2,d,cali,dock,dm,ab,bl,sh,false,f,a,b)))
+																	+(sum d:Bool.rcv_c_rm(d).(d)->(sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_up(e).sum f:Bool.rcv_c_down(f).Controller(e,m1,um,a,m2,false,cali,dock,dm,ab,bl,sh,d,f,false,b)))
+																					)
+																				 <>(
+																						(sum d:Bool.rcv_c_lm(d).(d)->(sum a:Bool.rcv_c_right(a).Controller(up,m1,um,false,m2,d,cali,dock,dm,ab,bl,sh,false,down,a,b))) 
+																						+(sum d:Bool.rcv_c_rm(d).(d)->(sum a:Bool.rcv_c_left(a).Controller(up,m1,um,a,m2,false,cali,dock,dm,ab,bl,sh,d,down,false,b)))
+																					)
+																		)
+																	%+(sum d:Bool.rcv_c_bt(d).(d)->(%sum a:Bool.rcv_c_left(a).sum e:Bool.rcv_c_right(e).Controller(up,m1,um,a,m2,false,cali,dock,dm,ab,bl,sh,false,down,e,b))
+%Controller(up,m1,um,false,m2,false,cali,dock,dm,ab,bl,sh,false,down,false,b))
+																  %)
+															   )%)
+)
++(pressUndock.(		%rmost.m2off.aHbrake.
+					(dock&&rm)->(snd_s_undock(true).rmost.m2off.aHbrake.Undock.Controller(up,m1,um,false,m2,lm,cali,false,dm,ab,bl,sh,rm,down,right,emer))
+							  <>((dock&&(!rm))->(Noact.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+											  <>((!dock)->(snd_s_undock(false).Dock.((!emer)->((cali&&sh)->((rm)->Controller(false,m1,um,true,m2,false,cali,true,dm,ab,bl,sh,true,true,false,emer)
+<>((lm)->Controller(false,m1,um,false,m2,lm,cali,true,dm,ab,bl,sh,false,false,true,emer))						)
+																									<>( ((!um)&&(!dm))->Controller(true,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,true,right,emer)
+																													  <>((um)->Controller(false,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,true,right,emer)
+<>((dm)->Controller(true,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,false,right,emer))									)
+																							 		  )
+																						   		)
+																						<>( ((!um)&&(!sh)&&(!dm))->Controller(true,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,true,right,emer)
+																													  <>(
+((um)->Controller(false,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,true,right,emer))
+%<>((lm)->Controller(true,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,false,right,emer)))
+%<>%((!sh)->Controller(true,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,false,right,emer))
++((sh)->Controller(false,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,false,right,emer))
++((dm)->Controller(true,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,false,right,emer))
+			
+	 % )
+%)		
+ %)
+)
+																						  )
+																				)
+														  )
+												)
+								)
+				)
+
+)
++(pressReset.( 
+				(!cali)->(
+							(dock)->(
+									  ((!um)&&(!dm)&&(!ab)&&(!bl))->(DoCali.snd_s_cali(true).sum b:Bool.rcv_c_sh(b).((b)->sum a:Bool.rcv_c_up(a).sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_left(d).sum e:Bool.rcv_c_right(e).Controller(a,m1,false,d,m2,false,true,dock,false,false,false,b,rm,c,e,emer)))
+																  <>(Noact.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+									)
+								  <>(UnCali.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+						)
+					  <>(
+							(dock)->(   (!sh)->(Noact.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+											 <>(DoCali.snd_s_cali(true).sum b:Bool.rcv_c_sh(b).((b)->sum a:Bool.rcv_c_up(a).sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_left(d).sum e:Bool.rcv_c_right(e).Controller(a,m1,false,d,m2,false,cali,dock,false,false,false,b,rm,c,e,emer))
+												)
+									)	
+								  <>((sh)->(UnCali.snd_s_cali(false).sum b:Bool.rcv_c_sh(b).(
+																						(!b)->((sum f:Bool.rcv_c_ab(f).sum a:Bool.rcv_c_up(a).sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_left(d).sum e:Bool.rcv_c_right(e).Controller(a,m1,false,d,m2,false,false,dock,false,f,false,b,rm,c,e,emer))
+																								+(sum f:Bool.rcv_c_bl(f).sum a:Bool.rcv_c_up(a).sum c:Bool.rcv_c_down(c).sum d:Bool.rcv_c_left(d).sum e:Bool.rcv_c_right(e).Controller(a,m1,false,d,m2,false,false,dock,false,false,f,b,rm,c,e,emer))
+																							  )
+																					 )
+											)
+										  <>(UnCali.Controller(up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer))
+									)
+						)
+					
+			 )
+			
+)
+;
+
+%up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right
+
+%pressStop.((up)->snd_m_m1(true).(sum b:Bool.rcv_c_um(b).((b)->snd_m_m1(false))).sum b:Bool.rcv_c_up(b).Controller(b,m1,um));
+
+proc Motor(up:Bool,m1:Bool,um:Bool,left:Bool,m2:Bool,lm:Bool)=
+sum b:Bool.rcv_m_m1(b).((b)->(rVbrake.mUp.snd_s_m1(true).Motor(up,b,um,left,m2,lm))<>(m1off.aVbrake.snd_s_m1(false).Motor(up,b,um,left,m2,lm)))
++sum b:Bool.rcv_m_m2(b).((b)->(releaseUp.rHbrake.mLeft.snd_s_m2(true).Motor(up,m1,um,left,b,lm))<>(m2off.aHbrake.snd_s_m2(false).Motor(up,m1,um,left,b,lm)))
++sum b:Bool.rcv_m_m2d(b).((b)->(rHbrake.mRight.snd_s_m2d(true).Motor(up,m1,um,left,b,lm))<>(m2off.aHbrake.snd_s_m2d(false).Motor(up,m1,um,left,b,lm)))
++sum b:Bool.rcv_m_m1d(b).((b)->(rVbrake.mDown.snd_s_m1d(true).Motor(up,b,um,left,m2,lm))<>(m1off.aVbrake.snd_s_m1d(false).Motor(up,b,um,left,m2,lm)))
++sum b:Bool.rcv_m_m1sh(b).((!b)->(m1off.aVbrake.snd_c_up(false).snd_c_left(true).Motor(false,m1,um,true,m2,lm)))
++sum b:Bool.rcv_m_m1dsh(b).((!b)->(m1off.aVbrake.snd_c_down(false).snd_c_up(false).snd_c_left(true).snd_c_right(true).Motor(up,m1,um,true,m2,lm))
+								<>(m1off.aVbrake.snd_c_down(false).snd_c_up(false).snd_c_left(false).snd_c_right(true).Motor(up,m1,um,false,m2,lm)))
++sum b:Bool.rcv_m_m1dshn(b).((!b)->(m1off.aVbrake.snd_c_down(true).snd_c_up(false).snd_c_left(true).snd_c_right(false).Motor(up,m1,um,true,m2,lm)))
++sum b:Bool.rcv_m_m1n(b).((!b)->(snd_c_down(true).snd_c_up(false).Motor(false,m1,um,left,m2,lm))<>(snd_c_down(false).snd_c_up(true).Motor(up,m1,um,left,m2,lm)))
++sum b:Bool.rcv_m_m2n(b).((!b)->(Noact.snd_c_left(false).Motor(up,m1,um,false,m2,lm)))
++sum b:Bool.rcv_m_m1o(b).((!b)->(snd_c_down(true).snd_c_up(true).Motor(up,m1,um,left,m2,lm))
+							  <>(snd_c_right(false).snd_c_left(true).snd_c_down(true).snd_c_up(false).Motor(up,m1,um,left,m2,lm))
+						  )
++sum b:Bool.rcv_m_m1dm(b).((!b)->(m1off.aVbrake.snd_c_m1dm(true).Motor(up,m1,um,left,b,lm)))
++sum b:Bool.rcv_m_m1shrm(b).((b)->(snd_c_down(true).snd_c_right(false).Motor(up,m1,um,left,m2,lm)))
++sum b:Bool.rcv_m_m1nn(b).((b)->(snd_c_down(false).Motor(up,m1,um,left,m2,lm))<>(snd_c_up(false).Motor(false,m1,um,left,m2,lm)))
++sum b:Bool.rcv_m_m1ush(b).((b)->(snd_c_left(false).snd_c_right(true).snd_c_down(false).Motor(up,m1,um,left,m2,lm)))
++sum b:Bool.rcv_m_emer(b).((b)->(rHbrake.snd_c_emer(true).snd_c_left(false).snd_c_right(false).Motor(up,m1,um,left,m2,lm))<>(aHbrake.snd_c_emer(false).Motor(up,m1,um,left,m2,lm)))
++sum b:Bool.rcv_m_cali(b).((b)->snd_c_up(false).snd_c_down(false).snd_c_left(true).snd_c_right(true).Motor(up,m1,um,left,m2,lm))
++sum b:Bool.rcv_m_cali1(b).((b)->snd_c_up(false).snd_c_down(false).snd_c_left(false).snd_c_right(true).Motor(up,m1,um,left,m2,lm))
++sum b:Bool.rcv_m_cali2(b).((b)->snd_c_up(false).snd_c_down(false).snd_c_left(true).snd_c_right(false).Motor(up,m1,um,left,m2,lm))
++sum b:Bool.rcv_m_cali3(b).((b)->snd_c_up(true).snd_c_down(true).snd_c_left(false).snd_c_right(false).Motor(up,m1,um,left,m2,lm))
+
+;
+%proc Motor(m1:Bool,m2:Bool)=
+%sum b:Bool.rcv_m_m1(b).((b)->(rVbrake.snd_s_m1(true).Motor(b,m2))<>(m1off.aVbrake.snd_s_m1(false).Motor(b,m2)))
+%+sum b:Bool.rcv_m_m2(b).((b)->(rHbrake.snd_s_m2(true).Motor(m1,b))<>(m2off.aHbrake.snd_s_m2(false).Motor(m1,b)));
+
+
+proc Sensor(up:Bool,m1:Bool,um:Bool,left:Bool,m2:Bool,lm:Bool,cali:Bool,dock:Bool,dm:Bool,ab:Bool,bl:Bool,sh:Bool,rm:Bool,down:Bool,right:Bool)=
+sum b:Bool.rcv_s_m1(b).
+	(
+	(b)->(
+		   (dock&&cali)
+				->( (dm)->((belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+							+(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right)))
+						<>((bl)->(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right))
+								<>((ab)->(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+										<>((um)->(snd_m_m1nn(false).Sensor(up,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,false,right)))))
+				  )
+			   <>(
+					((!cali)||(!dock))->(
+							(!um)->(	(dm)->(		(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+													+(belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+													+(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+													+(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right))
+								  			  )
+							    			<>( 	(bl)->(
+																(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+																+(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+																+(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right))
+													  		)
+														<>(
+																(sh)->(
+																			(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+																			+(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+																	  )	
+											  			  			<>( 
+																		(ab)->(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+																	  )
+														   )
+											 )
+					  			 )
+							)
+						 <>(
+							(!um)->(	(dm)->(		(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+													+(belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+													+(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+								  			  )
+							      		   <>( (bl)->(
+														(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+														+(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+													 )
+												   <>( (ab)->(umost.snd_c_um(true).Sensor(up,b,true,left,m2,lm,cali,dock,false,false,false,false,rm,down,right))
+													 )
+											)
+									)
+					  	    )
+				)
+		 )	
+		<>(snd_m_m1o(false).Sensor(false,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right))
+	)
+%up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right
++sum b:Bool.rcv_s_m2(b).(
+							(b)->(	(dock&&cali&&sh)->( (!lm)->(lmost.snd_c_lm(true).Sensor(up,m1,false,left,m2,true,cali,dock,false,false,false,true,false,down,right))
+													  )
+										
+								 )
+							  <>(snd_m_m1ush(true).Sensor(up,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right))
+							)
++sum b:Bool.rcv_s_m1d(b).
+	(
+		(b)->( (dock&&cali)
+							->(
+									(bl)->(dmost.snd_c_dm(true).Sensor(up,b,false,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+									
+								%<>(snd_m_m1n(true).Sensor(up,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,false,right))
+					 
+								<>(
+									(um)->(
+												(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right))
+												+(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+										  )
+										<>( 
+												(ab)->(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right))
+													<>(
+														(sh)->(
+																(rm)->(
+																		(dmost.snd_c_dm(true).Sensor(up,b,false,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+																	   +(belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+																	   )
+																	<>(snd_m_m1nn(true).Sensor(up,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,false,right)
+										 							  )
+															  )
+															<>(
+																	(dm)->(snd_m_m1nn(true).Sensor(up,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,false,right))
+															  )
+									 				 )
+										  )
+					 	  		)
+					       )
+		    			<>( ((!cali)||(!dock))->(
+									(!dm)->(	
+											(um)->(		
+														(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+														+(belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+														+(dmost.snd_c_dm(true).Sensor(up,b,false,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+														+(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right))
+													)
+							   					 <>(    
+														(ab)->(
+																	(belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+																	+(dmost.snd_c_dm(true).Sensor(up,b,false,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+																	+(shpos.snd_c_sh(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,false,true,rm,down,right))
+															   )
+										
+															<>(	
+																	(sh)->(
+																			 (belowsh.snd_c_bl(true).Sensor(up,b,um,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+																			+(dmost.snd_c_dm(true).Sensor(up,b,um,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+																		  )	
+																		<>(
+																			(bl)->(dmost.snd_c_dm(true).Sensor(up,b,um,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+																		  )
+															  )		
+													)
+											)
+									)
+								  <>(
+									(!dm)->(	
+											(um)->(		
+														(abovesh.snd_c_ab(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,true,false,false,rm,down,right))
+														+(belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+														+(dmost.snd_c_dm(true).Sensor(up,b,false,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+													)
+							   					 <>(    
+														(ab)->(
+																	(belowsh.snd_c_bl(true).Sensor(up,b,false,left,m2,lm,cali,dock,false,false,true,false,rm,down,right))
+																	+(dmost.snd_c_dm(true).Sensor(up,b,false,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+															   )
+															<>(	(bl)->(dmost.snd_c_dm(true).Sensor(up,b,um,left,m2,lm,cali,dock,true,false,false,false,rm,down,right))
+															  )		
+													)
+											)
+									)
+						%(lmost.snd_c_dm(true).Sensor(up,b,um,left,m2,lm,cali,dock,true,false,false,false,rm,false,right))
+						%<>(snd_m_m1nn(false).Sensor(false,m1,um,left,b,lm,cali,dock,dm,ab,bl,sh,rm,false,right))
+		     			)
+		   )
+		<>(snd_m_m1o(false).Sensor(up,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right))
+		
+	)
++sum b:Bool.rcv_s_m2d(b).(
+							(b)->(	(dock&&cali&&sh)->( (!rm)->(rmost.snd_c_rm(true).Sensor(up,m1,false,left,m2,false,cali,dock,false,false,false,true,true,down,right))
+													  )
+										
+								 )
+							  <>(snd_m_m1o(true).Sensor(up,b,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right))
+							)
++sum b:Bool.rcv_s_pos(b).(
+								(b)->(
+										(sh)->( (dock&&cali)->(
+										(lmost.snd_c_lm(true).snd_c_right(true).snd_c_up(false).snd_c_down(false).Sensor(up,m1,um,left,m2,true,cali,dock,dm,ab,bl,sh,false,down,right))
+										+(rmost.snd_c_rm(true).snd_c_left(true).snd_c_up(false).snd_c_down(true).Sensor(up,m1,um,true,m2,false,cali,dock,dm,ab,bl,sh,true,down,right))
+																)
+															<>(
+																
+(lmost.snd_c_lm(true).snd_c_right(false).Sensor(up,m1,um,left,m2,true,cali,dock,dm,ab,bl,sh,false,down,false))
+										+(rmost.snd_c_rm(true).snd_c_left(false).Sensor(up,m1,um,false,m2,false,cali,dock,dm,ab,bl,sh,true,down,false))
+																
+															  )
+										
+										%+(between.snd_c_bt(true).snd_c_right(true).snd_c_left(true).Sensor(up,m1,um,left,m2,false,cali,dock,dm,ab,bl,sh,false,down,right))
+											 )
+										<>(
+ 										(lmost.snd_c_lm(true).Sensor(up,m1,um,left,m2,true,cali,dock,dm,ab,bl,sh,false,down,right))
+										+(rmost.snd_c_rm(true).Sensor(up,m1,um,left,m2,false,cali,dock,dm,ab,bl,sh,true,down,right))
+										%+(between.snd_c_bt(true).Sensor(up,m1,um,left,m2,false,cali,dock,dm,ab,bl,sh,false,down,right))
+										  )
+									 )
+						  )
++sum b:Bool.rcv_s_undock(b).((b)->Sensor(up,m1,um,left,m2,lm,cali,false,dm,ab,bl,sh,rm,down,right)
+								<>Sensor(up,m1,um,left,m2,lm,cali,true,dm,ab,bl,sh,rm,down,right))
++sum b:Bool.rcv_s_cali(b).(
+							(b)->( 
+									
+												((!um)&&(!dm)&&(!ab)&&(!bl))->(shpos.snd_c_sh(true).(
+																			              				((!rm)&&(!lm))->(snd_m_cali(true).Sensor(up,m1,false,left,m2,lm,b,dock,false,false,false,true,rm,down,right))
+																									 				 <>(
+																			(lm)->(snd_m_cali1(true).Sensor(up,m1,false,left,m2,lm,b,dock,false,false,false,true,rm,down,right))
+																			   	<>(snd_m_cali2(true).Sensor(up,m1,false,left,m2,lm,b,dock,false,false,false,true,rm,down,right))
+																		   												)
+																									)
+								   								  			 )
+									  						    %<>()
+								)
+										 
+
+							 <>((sh)->(snd_c_sh(false).((snd_c_bl(true).snd_m_cali3(true).Sensor(up,m1,um,left,m2,lm,b,dock,dm,ab,true,false,rm,down,right))
+														+(snd_c_ab(true).snd_m_cali3(true).Sensor(up,m1,um,left,m2,lm,b,dock,dm,true,bl,false,rm,down,right))
+									  				   )
+									  )
+									<>(
+											Sensor(up,m1,um,left,m2,lm,b,dock,dm,ab,bl,sh,rm,down,right)
+									  )
+							   )
+						)
+;
+%up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right
+init %hide({comm_m_m1,comm_s_m1,comm_s_m2,comm_c_um,comm_m_m2,comm_c_lm,comm_m_m1dm,comm_c_m1dm,comm_c_left,comm_c_sh,comm_m_m1d,comm_s_m1d,comm_s_undock,comm_m_m1sh,comm_m_m1o,comm_m_m1n,comm_m_m2n,comm_c_dm,comm_c_ab,comm_m_m1dsh,comm_m_m1shrm,comm_c_right,comm_m_m1nn,comm_c_bl,comm_m_m2d,comm_c_rm,comm_m_m1dshn,comm_s_m2d,comm_m_m1ush,comm_s_cali,comm_c_down,comm_c_up,comm_m_emer,comm_c_emer,comm_s_pos,comm_c_bt,comm_m_cali,comm_m_cali1,comm_m_cali2,comm_m_cali3},
+allow({comm_m_m1,comm_s_m1,comm_s_m2,comm_c_um,comm_m_m2,comm_c_lm,comm_m_m1dm,comm_c_m1dm,comm_c_left,comm_c_sh,comm_m_m1d,comm_s_m1d,comm_m_m1sh,comm_m_m1o,comm_m_m1n,comm_m_m2n,comm_c_dm,comm_c_ab,comm_c_down,comm_c_up,comm_m_m1dsh,comm_m_m1shrm,comm_c_right,comm_m_m1nn,comm_c_bl,comm_m_m2d,comm_s_m2d,comm_c_rm,comm_m_cali,rmost,pressStop,mRight,Emer, Noact,rVbrake,stop,m1off,aVbrake,umost,mUp,pressUp,DoCali,rHbrake,Undock,Dock,pressStop,pressUndock,pressReset,releaseUp,m2off,aHbrake,between,UnCali,lmost,mLeft,mRight,shpos,dmost,mDown,pressDown,releaseDown,abovesh,belowsh,comm_m_m1ush,comm_m_m1dshn,comm_c_emer,comm_m_emer,pressResume,comm_s_pos,comm_c_bt,comm_s_undock,comm_s_cali,comm_m_cali1,comm_m_cali2,comm_m_cali3},comm({snd_m_m1|rcv_m_m1->comm_m_m1,snd_s_m1|rcv_s_m1->comm_s_m1,snd_c_um|rcv_c_um->comm_c_um,snd_m_m2|rcv_m_m2->comm_m_m2,snd_c_up|rcv_c_up->comm_c_up,snd_s_m2|rcv_s_m2->comm_s_m2,snd_c_lm|rcv_c_lm->comm_c_lm,snd_c_left|rcv_c_left->comm_c_left,snd_m_m1sh|rcv_m_m1sh->comm_m_m1sh,snd_c_sh|rcv_c_sh->comm_c_sh,snd_c_ab|rcv_c_ab->comm_c_ab,snd_m_m1n|rcv_m_m1n->comm_m_m1n,snd_m_m2n|
+rcv_m_m2n->comm_m_m2n,snd_m_m1d|rcv_m_m1d->comm_m_m1d,snd_s_m1d|rcv_s_m1d->comm_s_m1d,snd_c_down|rcv_c_down->comm_c_down,snd_m_m1dsh|rcv_m_m1dsh->comm_m_m1dsh,snd_m_m1dshn|rcv_m_m1dshn->comm_m_m1dshn,snd_c_dm|rcv_c_dm->comm_c_dm,snd_m_m1o|rcv_m_m1o->comm_m_m1o,snd_m_m1dm|rcv_m_m1dm->comm_m_m1dm,snd_c_m1dm|rcv_c_m1dm->comm_c_m1dm,snd_c_bl|rcv_c_bl->comm_c_bl,snd_m_m1shrm|rcv_m_m1shrm->comm_m_m1shrm,snd_c_right|rcv_c_right->comm_c_right,snd_m_m1nn|rcv_m_m1nn->comm_m_m1nn,snd_m_m2d|rcv_m_m2d->comm_m_m2d,snd_s_m2d|rcv_s_m2d->comm_s_m2d,snd_c_rm|rcv_c_rm->comm_c_rm,snd_m_m1ush|rcv_m_m1ush->comm_m_m1ush,snd_m_emer|rcv_m_emer->comm_m_emer,snd_c_emer|rcv_c_emer->comm_c_emer,snd_s_pos|rcv_s_pos->comm_s_pos,snd_c_bt|rcv_c_bt->comm_c_bt,snd_s_undock|rcv_s_undock->comm_s_undock,snd_s_cali|rcv_s_cali->comm_s_cali,snd_m_cali|rcv_m_cali->comm_m_cali,snd_m_cali1|rcv_m_cali1->comm_m_cali1,snd_m_cali2|rcv_m_cali2->comm_m_cali2,snd_m_cali3|rcv_m_cali3->comm_m_cali3},Controller(true,false,false,false,false,false,true,true,true,false,false,false,true,false,false,false)||Motor(false,false,false,false,false,false)||Sensor(true,false,false,false,false,false,true,true,true,false,false,false,true,false,false)));%)
+%hide({comm_m_m1,comm_s_m1,comm_c_um,comm4,comm_c_up},
+%up,m1,um,left,m2,lm,cali,dock,dm,ab,bl,sh,rm,down,right,emer
+%up,m1,um,left,m2,lm
+
